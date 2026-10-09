@@ -29,7 +29,6 @@
             padding: 20px 15px 40px;
         }
         
-        /* خلفية متحركة */
         body::before {
             content: '';
             position: fixed;
@@ -578,7 +577,6 @@
             }
         }
         
-        /* شريط التمرير */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -595,16 +593,14 @@
 </head>
 <body>
 
-    <!-- جسيمات -->
     <div class="particles" id="particles"></div>
 
     <div class="container">
         
-        <!-- الصورة الرمزية -->
         <div class="profile-section">
             <div class="avatar-wrapper">
                 <div class="avatar">
-                    <img src="grok_1786728123184.jpg" alt="المطور إبراهيم" />
+                    <img src="grok_1786887993530.jpg" alt="المطور إبراهيم" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%234facfe%22/%3E%3Ctext x=%2250%22 y=%2260%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22white%22%3E%F0%9F%91%A8%E2%80%8D%F0%9F%92%BB%3C/text%3E%3C/svg%3E'" />
                 </div>
                 <div class="verified-badge">✓</div>
             </div>
@@ -619,10 +615,8 @@
             </div>
         </div>
 
-        <!-- البطاقة الرئيسية -->
         <div class="main-card">
             
-            <!-- اللغة -->
             <div class="python-logo">
                 🐍 لغة برمجة Python فقط 🐍
             </div>
@@ -631,7 +625,6 @@
                 <div class="divider-text">⚡ خبرتي بالاختصار ⚡</div>
             </div>
 
-            <!-- المهارات -->
             <div class="skills-list">
                 <div class="skill-item">
                     <div class="skill-number">01</div>
@@ -673,7 +666,6 @@
                 <div class="divider-text">🛠️ أدواتي وشروحاتي 🛠️</div>
             </div>
 
-            <!-- بوت الأدوات -->
             <a href="https://t.me/HAKER_Py_1_Bot" target="_blank" class="btn green">
                 <div class="btn-left">
                     <div class="btn-icon">🤖</div>
@@ -685,7 +677,6 @@
                 <div class="btn-arrow">←</div>
             </a>
 
-            <!-- الشروحات -->
             <a href="https://t.me/CkdkrlPosmfbot" target="_blank" class="btn blue">
                 <div class="btn-left">
                     <div class="btn-icon">📚</div>
@@ -701,7 +692,6 @@
                 <div class="divider-text">🌟 قناتنا الأساسية 🌟</div>
             </div>
 
-            <!-- القناة الأساسية -->
             <a href="https://t.me/B_R_A_H_I_M_0" target="_blank" class="btn purple">
                 <div class="btn-left">
                     <div class="btn-icon">🌟</div>
@@ -717,7 +707,6 @@
                 <div class="divider-text">💬 حساباتنا في تلغرام 💬</div>
             </div>
 
-            <!-- حسابي -->
             <a href="https://t.me/BR_Go_16" target="_blank" class="btn telegram">
                 <div class="btn-left">
                     <div class="btn-icon">👤</div>
@@ -733,7 +722,6 @@
                 <div class="divider-text">📩 بوت التواصل 📩</div>
             </div>
 
-            <!-- بوت التواصل -->
             <a href="https://t.me/Contact_Br_bot" target="_blank" class="btn cyan">
                 <div class="btn-left">
                     <div class="btn-icon">📩</div>
@@ -749,7 +737,6 @@
                 <div class="divider-text">🤝 ثقة تعاملنا معكم 🤝</div>
             </div>
 
-            <!-- سجل الثقة -->
             <a href="https://t.me/br_16r" target="_blank" class="btn orange">
                 <div class="btn-left">
                     <div class="btn-icon">🤝</div>
@@ -763,7 +750,6 @@
 
         </div>
 
-        <!-- الفوتر -->
         <div class="footer">
             <div class="dua">
                 🤲 اللهم صلِّ وسلم وبارك على سيدنا محمد 🤲
@@ -779,7 +765,6 @@
     </div>
 
     <script>
-        // ==================== الجسيمات ====================
         function createParticles() {
             const container = document.getElementById('particles');
             const colors = ['#4facfe', '#00f2fe', '#a855f7', '#38ef7d', '#667eea'];
@@ -798,13 +783,11 @@
             }
         }
 
-        // ==================== التهيئة ====================
         window.addEventListener('load', () => {
             createParticles();
             console.log('✅ صفحة المطور إبراهيم جاهزة');
         });
 
-        // منع القائمة السياقية على الأزرار
         document.addEventListener('contextmenu', (e) => {
             if (e.target.closest('.btn, .skill-item')) {
                 e.preventDefault();
