@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f0c29">
-    <meta name="description" content="المطور إبراهيم - مبرمج جزائري متخصص في Python">
-    <title>🇩🇿 المطور إبراهيم | Python Developer</title>
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="المطور إبراهيم - Hacker Terminal">
+    <title>root@ibrahim:~#</title>
     <style>
         * {
             margin: 0;
@@ -13,332 +13,509 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-        
+
         html, body {
             width: 100%;
             min-height: 100vh;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
-        
+
+        :root {
+            --neon: #00ff41;
+            --neon-dim: #00cc33;
+            --neon-dark: #008822;
+            --cyan: #00d9ff;
+            --amber: #ffbd2e;
+            --danger: #ff0044;
+            --bg: #000000;
+            --bg-2: #0a0a0a;
+            --bg-3: #111111;
+            --border: rgba(0, 255, 65, 0.2);
+            --text: #00ff41;
+            --text-dim: #00cc33;
+            --text-muted: #008822;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 50%, #0f0c29 100%);
-            color: #fff;
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            background: var(--bg);
+            color: var(--text);
             position: relative;
             padding: 20px 15px 40px;
+            overflow-x: hidden;
         }
-        
+
+        /* ==================== Canvas Matrix 1 ==================== */
+        #matrix {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ==================== Canvas Matrix 2 ==================== */
+        #matrix2 {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.18;
+            pointer-events: none;
+            transform: rotate(180deg) scaleX(-1);
+            filter: blur(1px);
+        }
+
+        /* ==================== شبكة ==================== */
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 255, 65, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from { background-position: 0 0, 0 0; }
+            to   { background-position: 40px 40px, 40px 40px; }
+        }
+
+        /* ==================== CRT Scanlines ==================== */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(79, 172, 254, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 65, 0.05) 0px,
+                rgba(0, 255, 65, 0.05) 1px,
+                transparent 1px,
+                transparent 3px
+            );
             pointer-events: none;
-            z-index: 0;
-            animation: bgMove 20s ease-in-out infinite;
+            z-index: 2;
+            animation: crtFlicker 0.12s infinite;
         }
-        
-        @keyframes bgMove {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.15) rotate(5deg); }
+
+        @keyframes crtFlicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.94; }
+            100% { opacity: 1; }
         }
-        
+
+        /* ==================== توهج عام ==================== */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(0, 255, 65, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(0, 255, 65, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 1;
+            animation: bgPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.9; }
+            50%      { opacity: 1.0; }
+        }
+
+        /* ==================== الجسيمات ==================== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--neon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon), 0 0 20px var(--neon);
+            opacity: 0.6;
+            animation: particleFloat 12s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; transform: translateY(90vh) translateX(10px) scale(1); }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(-100vh) translateX(50px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* ==================== شرائط ضوئية ==================== */
+        .scanline-strip {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            box-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon);
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0.5;
+            animation: scanStrip 10s linear infinite;
+        }
+
+        @keyframes scanStrip {
+            0%   { top: -5%; opacity: 0; }
+            10%  { opacity: 0.7; }
+            90%  { opacity: 0.7; }
+            100% { top: 105%; opacity: 0; }
+        }
+
+        /* ==================== الحاوية ==================== */
         .container {
             max-width: 700px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
         }
-        
-        /* ==================== الصورة الرمزية ==================== */
-        .profile-section {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: slideDown 0.6s ease;
-        }
-        
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .avatar-wrapper {
-            position: relative;
-            display: inline-block;
+
+        /* ==================== Terminal Window ==================== */
+        .terminal-window {
+            background: rgba(0, 10, 0, 0.88);
+            border: 2px solid var(--neon);
+            border-radius: 8px;
+            box-shadow:
+                0 0 20px rgba(0, 255, 65, 0.3),
+                0 0 60px rgba(0, 255, 65, 0.1),
+                inset 0 0 30px rgba(0, 255, 65, 0.03);
+            overflow: hidden;
             margin-bottom: 20px;
+            backdrop-filter: blur(6px);
         }
-        
+
+        .terminal-header {
+            background: linear-gradient(180deg, #001a00, #000);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 255, 65, 0.4);
+        }
+
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            color: var(--neon);
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px var(--neon);
+        }
+
+        .terminal-body {
+            padding: 20px 18px;
+        }
+
+        /* ==================== Prompt ==================== */
+        .prompt-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            margin-bottom: 18px;
+            color: var(--neon);
+            text-shadow: 0 0 3px currentColor;
+            direction: ltr;
+        }
+
+        .prompt-user { color: var(--neon); }
+        .prompt-path { color: var(--cyan); }
+        .prompt-symbol { color: var(--amber); }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--neon);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            box-shadow: 0 0 8px var(--neon);
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* ==================== Avatar ==================== */
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .avatar-box {
+            display: inline-block;
+            position: relative;
+            padding: 12px;
+            background: rgba(0, 20, 0, 0.6);
+            border: 2px dashed rgba(0, 255, 65, 0.4);
+            border-radius: 50%;
+            box-shadow: inset 0 0 30px rgba(0, 255, 65, 0.08);
+        }
+
         .avatar {
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             overflow: hidden;
-            border: 4px solid rgba(79, 172, 254, 0.4);
-            box-shadow: 
-                0 0 60px rgba(79, 172, 254, 0.5),
-                0 0 100px rgba(102, 126, 234, 0.3),
-                0 0 40px rgba(0, 0, 0, 0.8);
+            border: 3px solid var(--neon);
+            box-shadow:
+                0 0 25px rgba(0, 255, 65, 0.6),
+                inset 0 0 30px rgba(0, 255, 65, 0.15);
             position: relative;
-            background: #0f0c29;
-            animation: avatarGlow 4s ease infinite;
+            background: #000;
         }
-        
-        @keyframes avatarGlow {
-            0%, 100% { 
-                box-shadow: 
-                    0 0 60px rgba(79, 172, 254, 0.5),
-                    0 0 100px rgba(102, 126, 234, 0.3);
-            }
-            50% { 
-                box-shadow: 
-                    0 0 80px rgba(79, 172, 254, 0.8),
-                    0 0 120px rgba(102, 126, 234, 0.5);
-            }
-        }
-        
+
         .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center;
             display: block;
+            filter: saturate(0.85) contrast(1.15) hue-rotate(60deg);
         }
-        
+
         .avatar::after {
-            content: '🇩🇿';
+            content: '';
             position: absolute;
-            bottom: 8px;
-            right: 8px;
-            font-size: 28px;
-            background: rgba(0, 0, 0, 0.85);
-            width: 42px;
-            height: 42px;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 65, 0.12) 0px,
+                rgba(0, 255, 65, 0.12) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid #4facfe;
-            z-index: 2;
-            box-shadow: 0 0 20px rgba(79, 172, 254, 0.8);
         }
-        
-        .verified-badge {
+
+        .status-badge {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            border: 3px solid #0f0c29;
-            box-shadow: 0 0 25px rgba(79, 172, 254, 0.8);
-            animation: verifiedPulse 2s infinite;
-            z-index: 3;
-        }
-        
-        @keyframes verifiedPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .name {
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #4facfe, #ffffff, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-            background-size: 200% 200%;
-            animation: gradientShift 4s ease infinite;
-        }
-        
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        .tagline {
-            color: #94a3b8;
-            font-size: 14px;
-            letter-spacing: 1px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .tagline .dot {
-            color: #4facfe;
-            font-weight: 900;
-        }
-        
-        .age-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(102, 126, 234, 0.15);
-            color: #a5b4fc;
-            padding: 3px 10px;
+            bottom: 5px;
+            left: 5px;
+            background: #000;
+            color: var(--neon);
+            border: 2px solid var(--neon);
+            padding: 4px 10px;
             border-radius: 20px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px var(--neon);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 15px var(--neon); }
+            50% { box-shadow: 0 0 30px var(--neon); }
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--neon);
+            letter-spacing: 3px;
+            margin-top: 18px;
+            text-shadow:
+                0 0 5px var(--neon),
+                0 0 15px var(--neon),
+                0 0 30px rgba(0, 255, 65, 0.5);
+            direction: ltr;
+        }
+
+        .name::before { content: '> '; color: var(--cyan); }
+        .name::after { content: '_'; animation: blink 1s step-end infinite; }
+
+        .tagline {
+            color: var(--cyan);
+            font-size: 13px;
+            margin-top: 8px;
+            letter-spacing: 1px;
+            direction: ltr;
+            text-shadow: 0 0 5px var(--cyan);
+        }
+
+        /* ==================== Typing Line ==================== */
+        .typing-line {
+            color: var(--neon);
             font-size: 12px;
-            border: 1px solid rgba(102, 126, 234, 0.3);
+            margin: 15px 0 20px;
+            padding: 10px 14px;
+            background: rgba(0, 20, 0, 0.5);
+            border-right: 3px solid var(--neon);
+            border-radius: 4px;
+            direction: ltr;
+            text-align: left;
+            min-height: 20px;
+            overflow: hidden;
+            text-shadow: 0 0 3px var(--neon);
         }
-        
-        /* ==================== البطاقة الرئيسية ==================== */
-        .main-card {
-            background: rgba(20, 20, 40, 0.7);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            margin-bottom: 20px;
-            animation: fadeInUp 0.6s ease 0.1s both;
+
+        .typing-line::before {
+            content: '$ ';
+            color: var(--amber);
+            font-weight: 900;
         }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* ==================== الفاصل المزخرف ==================== */
+
+        /* ==================== Divider ==================== */
         .divider {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-            color: #64748b;
+            gap: 8px;
+            margin: 22px 0 16px;
+            color: var(--cyan);
             font-size: 11px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            direction: ltr;
         }
-        
+
         .divider::before,
         .divider::after {
             content: '';
             flex: 1;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            box-shadow: 0 0 5px var(--neon);
         }
-        
+
         .divider-text {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: var(--neon);
+            font-weight: 900;
+            text-shadow: 0 0 5px var(--neon);
             white-space: nowrap;
         }
-        
-        /* ==================== Python Logo ==================== */
-        .python-logo {
-            text-align: center;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #3776ab, #ffd43b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 10px 0;
-            animation: gradientShift 3s ease infinite;
-            background-size: 200% 200%;
-        }
-        
-        /* ==================== قائمة المهارات ==================== */
+
+        /* ==================== Skills ==================== */
         .skills-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
-        
+
         .skill-item {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 20, 0, 0.6);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 4px;
             transition: all 0.25s;
             position: relative;
             overflow: hidden;
+            direction: ltr;
         }
-        
+
         .skill-item::before {
             content: '';
             position: absolute;
             top: 0;
-            right: 0;
+            left: 0;
             width: 3px;
             height: 100%;
-            background: linear-gradient(180deg, #4facfe, #a855f7);
+            background: var(--neon);
+            box-shadow: 0 0 10px var(--neon);
         }
-        
+
         .skill-item:hover {
-            background: rgba(79, 172, 254, 0.1);
-            transform: translateX(-5px);
-            border-color: rgba(79, 172, 254, 0.3);
+            background: rgba(0, 255, 65, 0.1);
+            border-color: var(--neon);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            transform: translateX(5px);
         }
-        
-        .skill-number {
-            font-size: 12px;
+
+        .skill-prompt {
+            color: var(--amber);
             font-weight: 900;
-            color: #4facfe;
-            min-width: 20px;
-        }
-        
-        .skill-icon {
-            font-size: 20px;
+            font-size: 14px;
             flex-shrink: 0;
         }
-        
+
+        .skill-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 5px var(--neon));
+        }
+
         .skill-text {
             flex: 1;
-            font-size: 14px;
-            color: #cbd5e1;
-            font-weight: 600;
-            line-height: 1.5;
+            font-size: 13px;
+            color: var(--neon);
+            font-weight: 700;
+            direction: rtl;
+            text-align: right;
+            text-shadow: 0 0 3px rgba(0, 255, 65, 0.5);
         }
-        
+
         .skill-check {
-            color: #38ef7d;
-            font-size: 16px;
+            color: var(--neon);
+            font-size: 14px;
             font-weight: 900;
             flex-shrink: 0;
+            text-shadow: 0 0 8px var(--neon);
         }
-        
-        /* ==================== الأزرار ==================== */
+
+        /* ==================== Buttons ==================== */
         .btn {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 20px;
-            border-radius: 14px;
-            border: none;
+            padding: 14px 18px;
+            background: rgba(0, 20, 0, 0.7);
+            border: 2px solid var(--neon);
+            border-radius: 4px;
             cursor: pointer;
             text-decoration: none;
             font-family: inherit;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            color: #fff;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--neon);
+            transition: all 0.25s;
             position: relative;
             overflow: hidden;
             margin-bottom: 10px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 0 5px var(--neon);
+            box-shadow:
+                inset 0 0 10px rgba(0, 255, 65, 0.05),
+                0 0 10px rgba(0, 255, 65, 0.15);
         }
-        
+
         .btn::before {
             content: '';
             position: absolute;
@@ -346,453 +523,504 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+            transition: left 0.5s ease;
         }
-        
+
         .btn:hover::before { left: 100%; }
-        
+
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(0, 255, 65, 0.15);
+            color: #ffffff;
+            box-shadow:
+                inset 0 0 20px rgba(0, 255, 65, 0.15),
+                0 0 30px rgba(0, 255, 65, 0.6);
+            transform: translateX(-3px);
+            text-shadow: 0 0 10px var(--neon);
         }
-        
+
         .btn:active {
-            transform: translateY(0) scale(0.98);
+            transform: translateX(0) scale(0.98);
         }
-        
+
         .btn-left {
             display: flex;
             align-items: center;
             gap: 12px;
+            flex: 1;
         }
-        
+
         .btn-icon {
-            font-size: 22px;
+            font-size: 20px;
             flex-shrink: 0;
+            filter: drop-shadow(0 0 5px var(--neon));
         }
-        
+
         .btn-text {
             display: flex;
             flex-direction: column;
             text-align: right;
             gap: 2px;
+            flex: 1;
         }
-        
+
         .btn-text .label {
             font-size: 14px;
             font-weight: 800;
+            direction: rtl;
+            color: var(--neon);
         }
-        
+
         .btn-text .sub {
-            font-size: 11px;
-            opacity: 0.8;
-            font-weight: 500;
-        }
-        
-        .btn-arrow {
-            font-size: 18px;
+            font-size: 10px;
             opacity: 0.7;
+            font-weight: 500;
+            direction: ltr;
+            color: var(--cyan);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-arrow {
+            font-size: 16px;
+            opacity: 0.8;
             transition: transform 0.3s;
+            color: var(--neon);
         }
-        
+
         .btn:hover .btn-arrow {
-            transform: translateX(-5px);
+            transform: translateX(-6px);
+            opacity: 1;
         }
-        
-        /* ألوان الأزرار */
-        .btn.green {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
-        }
-        
-        .btn.green:hover {
-            box-shadow: 0 10px 30px rgba(56, 239, 125, 0.6);
-        }
-        
-        .btn.blue {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
-        }
-        
-        .btn.blue:hover {
-            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.6);
-        }
-        
-        .btn.purple {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn.purple:hover {
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
-        }
-        
-        .btn.orange {
-            background: linear-gradient(135deg, #fa709a, #fee140);
-            color: #2d1b3d;
-            box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
-        }
-        
-        .btn.orange:hover {
-            box-shadow: 0 10px 30px rgba(250, 112, 154, 0.6);
-        }
-        
-        .btn.telegram {
-            background: linear-gradient(135deg, #0088cc, #229ED9);
-            box-shadow: 0 4px 15px rgba(34, 158, 217, 0.4);
-        }
-        
-        .btn.telegram:hover {
-            box-shadow: 0 10px 30px rgba(34, 158, 217, 0.6);
-        }
-        
-        .btn.cyan {
-            background: linear-gradient(135deg, #06beb6, #48b1bf);
-            box-shadow: 0 4px 15px rgba(6, 190, 182, 0.4);
-        }
-        
-        .btn.cyan:hover {
-            box-shadow: 0 10px 30px rgba(6, 190, 182, 0.6);
-        }
-        
-        /* ==================== الفوتر ==================== */
+
+        /* ==================== Footer ==================== */
         .footer {
             text-align: center;
-            padding: 30px 15px;
-            margin-top: 20px;
-            animation: fadeInUp 0.6s ease 0.3s both;
+            padding: 25px 15px;
+            margin-top: 15px;
         }
-        
+
         .dua {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            background: linear-gradient(135deg, #38ef7d, #4facfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--neon);
+            text-shadow: 0 0 10px var(--neon);
             margin-bottom: 10px;
             line-height: 1.8;
         }
-        
+
         .thanks {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-bottom: 20px;
+            color: var(--cyan);
+            font-size: 13px;
+            margin-bottom: 18px;
+            text-shadow: 0 0 5px var(--cyan);
+            direction: ltr;
         }
-        
+
         .copyright {
-            color: #475569;
-            font-size: 12px;
-            margin-top: 15px;
+            color: var(--neon-dark);
+            font-size: 11px;
             padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px dashed rgba(0, 255, 65, 0.3);
+            direction: ltr;
+            letter-spacing: 1px;
         }
-        
+
         .copyright strong {
-            color: #4facfe;
+            color: var(--neon);
+            text-shadow: 0 0 5px var(--neon);
         }
-        
-        /* ==================== الجسيمات ==================== */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #4facfe;
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: particleFloat 15s linear infinite;
-        }
-        
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
-            100% {
-                transform: translateY(-100vh) translateX(50px);
-                opacity: 0;
-            }
-        }
-        
-        /* ==================== للهواتف ==================== */
+
+        /* ==================== Mobile ==================== */
         @media (max-width: 500px) {
-            body {
-                padding: 15px 10px 30px;
-            }
-            
-            .avatar {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .avatar::after {
-                font-size: 24px;
-                width: 36px;
-                height: 36px;
-            }
-            
-            .verified-badge {
-                width: 34px;
-                height: 34px;
-                font-size: 18px;
-            }
-            
-            .name {
-                font-size: 26px;
-            }
-            
-            .main-card {
-                padding: 20px 15px;
-            }
-            
-            .btn {
-                padding: 14px 16px;
-            }
-            
-            .btn-icon {
-                font-size: 20px;
-            }
-            
-            .btn-text .label {
-                font-size: 13px;
-            }
-            
-            .skill-item {
-                padding: 10px 12px;
-            }
-            
-            .skill-text {
-                font-size: 13px;
-            }
+            body { padding: 12px 10px 30px; }
+            .avatar { width: 130px; height: 130px; }
+            .name { font-size: 22px; letter-spacing: 2px; }
+            .terminal-body { padding: 15px 12px; }
+            .btn { padding: 12px 14px; }
+            .btn-icon { font-size: 18px; }
+            .btn-text .label { font-size: 13px; }
+            .skill-item { padding: 10px 12px; }
+            .skill-text { font-size: 12px; }
         }
-        
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03);
-        }
-        
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #4facfe, #a855f7);
-            border-radius: 4px;
+            background: var(--neon);
+            box-shadow: 0 0 10px var(--neon);
         }
     </style>
 </head>
 <body>
 
+    <canvas id="matrix"></canvas>
+    <canvas id="matrix2"></canvas>
+    <div class="grid-overlay"></div>
     <div class="particles" id="particles"></div>
+    <div class="scanline-strip"></div>
+    <div class="scanline-strip" style="animation-delay: 5s"></div>
 
     <div class="container">
-        
-        <div class="profile-section">
-            <div class="avatar-wrapper">
-                <div class="avatar">
-                    <img src="grok_1786887993530.jpg" alt="المطور إبراهيم" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%234facfe%22/%3E%3Ctext x=%2250%22 y=%2260%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22white%22%3E%F0%9F%91%A8%E2%80%8D%F0%9F%92%BB%3C/text%3E%3C/svg%3E'" />
-                </div>
-                <div class="verified-badge">✓</div>
-            </div>
-            
-            <h1 class="name">المطور إبراهيم</h1>
-            
-            <div class="tagline">
-                <span>🇩🇿</span>
-                <span>مبرمج جزائري</span>
-                <span class="dot">•</span>
-                <span class="age-badge">🎂 16 سنة</span>
-            </div>
-        </div>
 
-        <div class="main-card">
-            
-            <div class="python-logo">
-                🐍 لغة برمجة Python فقط 🐍
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="terminal-title">root@ibrahim — /bin/bash</div>
             </div>
 
-            <div class="divider">
-                <div class="divider-text">⚡ خبرتي بالاختصار ⚡</div>
-            </div>
+            <div class="terminal-body">
 
-            <div class="skills-list">
-                <div class="skill-item">
-                    <div class="skill-number">01</div>
-                    <div class="skill-icon">💻</div>
-                    <div class="skill-text">مبرمج ومطور بايثون</div>
-                    <div class="skill-check">✓</div>
+                <div class="prompt-line">
+                    <span class="prompt-user">root@ibrahim</span>
+                    <span>:</span>
+                    <span class="prompt-path">~</span>
+                    <span class="prompt-symbol">#</span>
+                    <span>whoami</span>
+                    <span class="cursor"></span>
                 </div>
-                
-                <div class="skill-item">
-                    <div class="skill-number">02</div>
-                    <div class="skill-icon">🔓</div>
-                    <div class="skill-text">مفكك تشفير أدوات بايثون</div>
-                    <div class="skill-check">✓</div>
-                </div>
-                
-                <div class="skill-item">
-                    <div class="skill-number">03</div>
-                    <div class="skill-icon">⏰</div>
-                    <div class="skill-text">مفكك وقت أدوات منتهية الوقت</div>
-                    <div class="skill-check">✓</div>
-                </div>
-                
-                <div class="skill-item">
-                    <div class="skill-number">04</div>
-                    <div class="skill-icon">🔒</div>
-                    <div class="skill-text">كاسر حماية شهادة SSL للتطبيقات</div>
-                    <div class="skill-check">✓</div>
-                </div>
-                
-                <div class="skill-item">
-                    <div class="skill-number">05</div>
-                    <div class="skill-icon">🌐</div>
-                    <div class="skill-text">مؤسس سرفرات عديدة</div>
-                    <div class="skill-check">✓</div>
-                </div>
-            </div>
 
-            <div class="divider">
-                <div class="divider-text">🛠️ أدواتي وشروحاتي 🛠️</div>
-            </div>
+                <div class="avatar-section">
+                    <div class="avatar-box">
+                        <div class="avatar">
+                            <img src="grok_1786887993530.jpg" alt="المطور إبراهيم"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23000000%22/%3E%3Ctext x=%2250%22 y=%2265%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22%2300ff41%22%3E%3E_%3C/text%3E%3C/svg%3E'" />
+                        </div>
+                        <div class="status-badge">● ONLINE</div>
+                    </div>
 
-            <a href="https://t.me/HAKER_Py_1_Bot" target="_blank" class="btn green">
-                <div class="btn-left">
-                    <div class="btn-icon">🤖</div>
-                    <div class="btn-text">
-                        <div class="label">بوت أدوات بايثون</div>
-                        <div class="sub">Python Tools Bot</div>
+                    <div class="name">IBRAHIM</div>
+                    <div class="tagline">// Python Developer &amp; Server Founder</div>
+                </div>
+
+                <div class="typing-line" id="typingLine"></div>
+
+                <div class="divider">
+                    <div class="divider-text">[ SKILLS ]</div>
+                </div>
+
+                <div class="skills-list">
+                    <div class="skill-item">
+                        <span class="skill-prompt">&gt;</span>
+                        <span class="skill-icon">💻</span>
+                        <span class="skill-text">مبرمج ومطور بايثون</span>
+                        <span class="skill-check">[✓]</span>
+                    </div>
+
+                    <div class="skill-item">
+                        <span class="skill-prompt">&gt;</span>
+                        <span class="skill-icon">🔓</span>
+                        <span class="skill-text">مفكك تشفير أدوات بايثون</span>
+                        <span class="skill-check">[✓]</span>
+                    </div>
+
+                    <div class="skill-item">
+                        <span class="skill-prompt">&gt;</span>
+                        <span class="skill-icon">⏰</span>
+                        <span class="skill-text">مفكك وقت الأدوات المنتهية</span>
+                        <span class="skill-check">[✓]</span>
+                    </div>
+
+                    <div class="skill-item">
+                        <span class="skill-prompt">&gt;</span>
+                        <span class="skill-icon">🔒</span>
+                        <span class="skill-text">كاسر حماية SSL للتطبيقات</span>
+                        <span class="skill-check">[✓]</span>
+                    </div>
+
+                    <div class="skill-item">
+                        <span class="skill-prompt">&gt;</span>
+                        <span class="skill-icon">🌐</span>
+                        <span class="skill-text">مؤسس سرفرات عديدة</span>
+                        <span class="skill-check">[✓]</span>
                     </div>
                 </div>
-                <div class="btn-arrow">←</div>
-            </a>
 
-            <a href="https://t.me/CkdkrlPosmfbot" target="_blank" class="btn blue">
-                <div class="btn-left">
-                    <div class="btn-icon">📚</div>
-                    <div class="btn-text">
-                        <div class="label">بوت شروحات تعلم البرمجة</div>
-                        <div class="sub">Learn Python Bot</div>
-                    </div>
+                <div class="divider">
+                    <div class="divider-text">[ TOOLS &amp; LINKS ]</div>
                 </div>
-                <div class="btn-arrow">←</div>
-            </a>
 
-            <div class="divider">
-                <div class="divider-text">🌟 قناتنا الأساسية 🌟</div>
+                <a href="https://t.me/HAKER_Py_1_Bot" target="_blank" class="btn">
+                    <div class="btn-left">
+                        <div class="btn-icon">🤖</div>
+                        <div class="btn-text">
+                            <div class="label">بوت أدوات بايثون</div>
+                            <div class="sub">./python_tools_bot</div>
+                        </div>
+                    </div>
+                    <div class="btn-arrow">&larr;</div>
+                </a>
+
+                <a href="https://t.me/CkdkrlPosmfbot" target="_blank" class="btn">
+                    <div class="btn-left">
+                        <div class="btn-icon">📚</div>
+                        <div class="btn-text">
+                            <div class="label">بوت شروحات البرمجة</div>
+                            <div class="sub">./learn_python_bot</div>
+                        </div>
+                    </div>
+                    <div class="btn-arrow">&larr;</div>
+                </a>
+
+                <div class="divider">
+                    <div class="divider-text">[ MAIN CHANNEL ]</div>
+                </div>
+
+                <a href="https://t.me/B_R_A_H_I_M_0" target="_blank" class="btn">
+                    <div class="btn-left">
+                        <div class="btn-icon">🌟</div>
+                        <div class="btn-text">
+                            <div class="label">قناتنا الأساسية</div>
+                            <div class="sub">@B_R_A_H_I_M_0</div>
+                        </div>
+                    </div>
+                    <div class="btn-arrow">&larr;</div>
+                </a>
+
+                <div class="divider">
+                    <div class="divider-text">[ CONTACT ]</div>
+                </div>
+
+                <a href="https://t.me/BR_Go_16" target="_blank" class="btn">
+                    <div class="btn-left">
+                        <div class="btn-icon">👤</div>
+                        <div class="btn-text">
+                            <div class="label">حسابي على تلغرام</div>
+                            <div class="sub">@BR_Go_16</div>
+                        </div>
+                    </div>
+                    <div class="btn-arrow">&larr;</div>
+                </a>
+
+                <a href="https://t.me/Contact_Br_bot" target="_blank" class="btn">
+                    <div class="btn-left">
+                        <div class="btn-icon">📩</div>
+                        <div class="btn-text">
+                            <div class="label">بوت التواصل</div>
+                            <div class="sub">./contact_bot</div>
+                        </div>
+                    </div>
+                    <div class="btn-arrow">&larr;</div>
+                </a>
+
+                <div class="divider">
+                    <div class="divider-text">[ TRUST ]</div>
+                </div>
+
+                <a href="https://t.me/br_16r" target="_blank" class="btn">
+                    <div class="btn-left">
+                        <div class="btn-icon">🤝</div>
+                        <div class="btn-text">
+                            <div class="label">سجل ثقة التعامل</div>
+                            <div class="sub">./trust_record</div>
+                        </div>
+                    </div>
+                    <div class="btn-arrow">&larr;</div>
+                </a>
+
+                <div class="prompt-line" style="margin-top:20px;margin-bottom:0">
+                    <span class="prompt-user">root@ibrahim</span>
+                    <span>:</span>
+                    <span class="prompt-path">~</span>
+                    <span class="prompt-symbol">#</span>
+                    <span class="cursor"></span>
+                </div>
+
             </div>
-
-            <a href="https://t.me/B_R_A_H_I_M_0" target="_blank" class="btn purple">
-                <div class="btn-left">
-                    <div class="btn-icon">🌟</div>
-                    <div class="btn-text">
-                        <div class="label">قناتنا الأساسية</div>
-                        <div class="sub">Main Channel</div>
-                    </div>
-                </div>
-                <div class="btn-arrow">←</div>
-            </a>
-
-            <div class="divider">
-                <div class="divider-text">💬 حساباتنا في تلغرام 💬</div>
-            </div>
-
-            <a href="https://t.me/BR_Go_16" target="_blank" class="btn telegram">
-                <div class="btn-left">
-                    <div class="btn-icon">👤</div>
-                    <div class="btn-text">
-                        <div class="label">حسابي على تلغرام</div>
-                        <div class="sub">@BR_Go_16</div>
-                    </div>
-                </div>
-                <div class="btn-arrow">←</div>
-            </a>
-
-            <div class="divider">
-                <div class="divider-text">📩 بوت التواصل 📩</div>
-            </div>
-
-            <a href="https://t.me/Contact_Br_bot" target="_blank" class="btn cyan">
-                <div class="btn-left">
-                    <div class="btn-icon">📩</div>
-                    <div class="btn-text">
-                        <div class="label">بوت تواصل معنا</div>
-                        <div class="sub">Contact Bot</div>
-                    </div>
-                </div>
-                <div class="btn-arrow">←</div>
-            </a>
-
-            <div class="divider">
-                <div class="divider-text">🤝 ثقة تعاملنا معكم 🤝</div>
-            </div>
-
-            <a href="https://t.me/br_16r" target="_blank" class="btn orange">
-                <div class="btn-left">
-                    <div class="btn-icon">🤝</div>
-                    <div class="btn-text">
-                        <div class="label">سجل ثقة تعاملنا</div>
-                        <div class="sub">Trust Record</div>
-                    </div>
-                </div>
-                <div class="btn-arrow">←</div>
-            </a>
-
         </div>
 
         <div class="footer">
-            <div class="dua">
-                🤲 اللهم صلِّ وسلم وبارك على سيدنا محمد 🤲
-            </div>
-            <div class="thanks">
-                💚 دمتم بخير 💚
-            </div>
+            <div class="dua">🤲 اللهم صلِّ وسلم وبارك على سيدنا محمد 🤲</div>
+            <div class="thanks">// Stay Curious. Stay Hacking. //</div>
             <div class="copyright">
-                © 2026 <strong>المطور إبراهيم</strong> -- جميع الحقوق محفوظة
+                © 2026 <strong>IBRAHIM</strong> :: All Rights Reserved
             </div>
         </div>
 
     </div>
 
     <script>
-        function createParticles() {
+        // ═══════════════════════════════════════════════════════
+        //  Matrix Rain — Layer 1
+        // ═══════════════════════════════════════════════════════
+        (function() {
+            const canvas = document.getElementById('matrix');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン0123456789ABCDEF<>{}[]()/*-+=$#@!%&'.split('');
+
+            const fontSize = 16;
+            let columns = Math.floor(canvas.width / fontSize);
+            let drops = Array(columns).fill(1);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.font = 'bold ' + fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+
+                    if (Math.random() > 0.98) {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.shadowColor = '#00ff41';
+                        ctx.shadowBlur = 20;
+                    } else {
+                        const alpha = Math.max(0.3, 1 - (y / canvas.height) * 0.8);
+                        ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
+                        ctx.shadowColor = '#00ff41';
+                        ctx.shadowBlur = 8;
+                    }
+
+                    ctx.fillText(text, x, y);
+
+                    if (y > canvas.height && Math.random() > 0.96) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+
+                ctx.shadowBlur = 0;
+            }
+
+            setInterval(draw, 40);
+
+            window.addEventListener('resize', () => {
+                columns = Math.floor(canvas.width / fontSize);
+                drops = Array(columns).fill(1);
+            });
+        })();
+
+        // ═══════════════════════════════════════════════════════
+        //  Matrix Rain — Layer 2 (ثنائي)
+        // ═══════════════════════════════════════════════════════
+        (function() {
+            const canvas = document.getElementById('matrix2');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const chars = '01'.split('');
+            const fontSize = 20;
+            let columns = Math.floor(canvas.width / fontSize);
+            let drops = Array(columns).fill(1);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.font = 'bold ' + fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillStyle = '#00d9ff';
+                    ctx.shadowColor = '#00d9ff';
+                    ctx.shadowBlur = 6;
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+
+                ctx.shadowBlur = 0;
+            }
+
+            setInterval(draw, 80);
+        })();
+
+        // ═══════════════════════════════════════════════════════
+        //  Particles
+        // ═══════════════════════════════════════════════════════
+        (function() {
             const container = document.getElementById('particles');
-            const colors = ['#4facfe', '#00f2fe', '#a855f7', '#38ef7d', '#667eea'];
-            
-            for (let i = 0; i < 30; i++) {
+            const colors = ['#00ff41', '#00d9ff', '#00cc33', '#00ff41', '#00d9ff'];
+
+            for (let i = 0; i < 50; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
                 p.style.left = Math.random() * 100 + '%';
-                p.style.animationDelay = Math.random() * 15 + 's';
-                p.style.animationDuration = (10 + Math.random() * 15) + 's';
-                p.style.background = colors[Math.floor(Math.random() * colors.length)];
-                p.style.width = (2 + Math.random() * 4) + 'px';
-                p.style.height = p.style.width;
-                p.style.boxShadow = `0 0 10px ${p.style.background}`;
+                p.style.animationDelay = Math.random() * 12 + 's';
+                p.style.animationDuration = (8 + Math.random() * 10) + 's';
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                p.style.background = color;
+                p.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+                const size = (2 + Math.random() * 3) + 'px';
+                p.style.width = size;
+                p.style.height = size;
                 container.appendChild(p);
             }
-        }
+        })();
 
-        window.addEventListener('load', () => {
-            createParticles();
-            console.log('✅ صفحة المطور إبراهيم جاهزة');
-        });
+        // ═══════════════════════════════════════════════════════
+        //  Typing Effect
+        // ═══════════════════════════════════════════════════════
+        (function() {
+            const el = document.getElementById('typingLine');
+            const lines = [
+                'initializing system...',
+                'loading modules: [python, requests, aiohttp]',
+                'status: ACTIVE',
+                'welcome to the terminal.',
+                'click a link below to continue...'
+            ];
+            let lineIdx = 0;
+            let charIdx = 0;
+            let isDeleting = false;
 
-        document.addEventListener('contextmenu', (e) => {
-            if (e.target.closest('.btn, .skill-item')) {
-                e.preventDefault();
+            function type() {
+                const current = lines[lineIdx];
+
+                if (!isDeleting) {
+                    el.textContent = current.substring(0, charIdx + 1);
+                    charIdx++;
+                    if (charIdx === current.length) {
+                        isDeleting = true;
+                        setTimeout(type, 1800);
+                        return;
+                    }
+                    setTimeout(type, 50);
+                } else {
+                    el.textContent = current.substring(0, charIdx - 1);
+                    charIdx--;
+                    if (charIdx === 0) {
+                        isDeleting = false;
+                        lineIdx = (lineIdx + 1) % lines.length;
+                        setTimeout(type, 300);
+                        return;
+                    }
+                    setTimeout(type, 20);
+                }
             }
-        });
+
+            setTimeout(type, 500);
+        })();
+
+        // ═══════════════════════════════════════════════════════
+        //  Console
+        // ═══════════════════════════════════════════════════════
+        console.log('%croot@ibrahim:~#', 'color:#00ff41;font-family:monospace;font-size:16px;font-weight:bold');
+        console.log('%cWelcome, hacker.', 'color:#00d9ff;font-family:monospace;font-size:12px');
+        console.log('%cStay curious.', 'color:#ffbd2e;font-family:monospace;font-size:12px');
     </script>
 </body>
 </html>
